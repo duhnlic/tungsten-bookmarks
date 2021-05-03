@@ -9,22 +9,25 @@ const BookmarkList= ({handleDelete, setSubmitMode, setFormData}) => {
 
 
     return (
-        <div>
+        <div className="bookmark-list">
             <h2>Your Bookmarks</h2>
-            <div>
-                <ul>
-                    {data.map((bookmarks, i) =>{
-                        return(
-                        <div key={bookmarks.i}>
-                            <div>
-                                <li>{bookmarks.label}</li>
-                                <li><a href={bookmarks.url}>{bookmarks.url}</a></li>
-                                <li>{bookmarks.tags[0]}</li>
-                                <li>{bookmarks.tags[1]}</li>
-                                <li>{bookmarks.tags[2]}</li>      
-                            </div>
-                            <div>
+            <div>               
+                {data.map((bookmarks, i) =>{
+                    return(
+                    <div key={bookmarks.i}>
+                        <div>
+                            <h4>{bookmarks.label}</h4>
+                            <p><a href={bookmarks.url}>{bookmarks.url}</a></p>
+                            <div className="tags">
+                            <p className="tag-label">{bookmarks.tags[0]}</p>
+                            <p className="tag-label">{bookmarks.tags[1]}</p>
+                            <p className="tag-label">{bookmarks.tags[2]}</p>
+                            </div>      
+                        </div>
+                        <div className="crud-buttons">
+                            <div className="btn-div">
                                 <button
+                                    className="btn btn-ud"
                                     onClick={() => { 
                                         handleDelete(bookmarks._id)
                                     }
@@ -32,8 +35,9 @@ const BookmarkList= ({handleDelete, setSubmitMode, setFormData}) => {
                                     Delete
                                 </button>
                             </div>
-                            <div>
+                            <div className="btn-div">
                                 <button
+                                    className="btn btn-ud"
                                     onClick={() => { 
                                         setSubmitMode("PUT")
                                         setFormData({...bookmarks})
@@ -42,11 +46,11 @@ const BookmarkList= ({handleDelete, setSubmitMode, setFormData}) => {
                                 }>
                                     Update
                                 </button>
-                            </div>                            
-                        </div>
-                        )
-                    })}
-                </ul>
+                            </div> 
+                        </div>                           
+                    </div>
+                    )
+                })}
             </div>
         </div>
     )

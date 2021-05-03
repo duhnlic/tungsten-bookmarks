@@ -1,3 +1,16 @@
+.app-header {
+  display: flex;
+  justify-content: center;
+  letter-spacing: 40px;
+}
+
+
+.app-body {
+  display: flex;
+  justify-content: space-around;
+}
+
+
 .App {
   text-align: center;
 }
@@ -13,20 +26,57 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
 }
+
+.form-submit {
+    /* width: 75%; */
+    /* display: flex;
+    justify-content: space-between; */
+    /* margin: 0px 10px; */
+    border: 2px solid black;
+    background-color: #FFDDD2;
+    border-radius: 13%;
+    padding-bottom: 16px;
+    box-shadow: 8px 8px 16px rgba(0,0,0, 0.3);
+
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.tag-label{
+  padding: 8px;
+  border: 1px solid #f3e9cd;
+  background-color: #f8f2e0;
+  border-radius: 18px;
+  box-shadow: 3px 4px 10px #E29578;
+}
+
+.bookmark-list {
+  background-color: #FFDDD2;
+}
+
+.btn-div {
+  margin: 8px;
+}
+
+.crud-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  padding: 5px;
+}
+
+/* .btn-ud {
+  padding: 5px;
+} */
 
 @keyframes App-logo-spin {
   from {
@@ -36,3 +86,5 @@
     transform: rotate(360deg);
   }
 }
+
+

@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Link, Switch, Route} from 'react-router-dom';
 // import logo from './logo.svg';
 import './App.css';
 import BookmarkList from './Components/BookmarkList/BookmarkList';
+import Form from './Components/Form/Form';
 
 export const DataContext = React.createContext();
 
@@ -26,13 +27,6 @@ export function App() {
   useEffect(() => {
     getBookmarkData();
   }, []);
-  console.log(bookmarks);
-
-
-
-
-
-
 
 
   // Create
@@ -110,8 +104,6 @@ export function App() {
 
 
 
-
-
   // Delete
   const deleteBookmark = async (id) => {
     try {
@@ -137,72 +129,32 @@ export function App() {
     };
 
 
-
-
-
-
-
-
-
-
-
   return (
-    <DataContext.Provider value={bookmarks}>
-      <h1>Tungsten Bookmarks</h1>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          border: "2px solid black",
-          borderRadius: "25%",
-          paddingBottom: "16px",
-          boxShadow: "8px 8px 16px rgba(0,0,0, 0.3)"
-        }}
-      >
-        <h3>Create New Bookmark</h3>
-        <label>
-          Label:{" "}
-          <input
-            type="text"
-            id="label"
-            value={formData.label}
-            onChange={handleChange}
-            placeholder={"enter bookmark label..."}
-          ></input>{" "}
-        </label>
-        <br />
-        <label>
-          Url:{" "}
-        <input
-          type="text"
-          id="url"
-          value={formData.url}
-          onChange={handleChange}
-          placeholder={"enter url..."}
-        ></input>{" "}
-        </label>
-        <label>
-          Tags:{" "}
-          <input
-            type="text"
-            id="tags"
-            value={Array.isArray(formData.tags) ? formData.tags.join(" ") : formData.tags}
-            onChange={handleChange}
-            placeholder={"separate tags w/ a space..."}
-            ></input>{" "}
-        </label>
-        <button type="submit">{submitMode === "POST" ? "Submit" : "Update"}</button>
-      </form>
-      <Router>
-        {/* <Switch>
-          <Route path='/bookmarks' component={bookmarks}/>
-        </Switch> */}
-        <BookmarkList
-          handleDelete={handleDelete}
-          setSubmitMode={setSubmitMode}
-          setFormData={setFormData}
-        />
-      </Router>
-    </DataContext.Provider>
+    <div>
+      <div className="app-header">
+          <h1>TUNGSTEN BOOKMARKS</h1>
+      </div>
+      <div className="app-body">
+        <DataContext.Provider value={bookmarks}>
+          <Router>
+            {/* <Switch>
+              <Route path='/bookmarks' component={bookmarks}/>
+            </Switch> */}
+            <Form
+              formData={formData}
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              submitMode={submitMode}
+            />
+            <BookmarkList
+              handleDelete={handleDelete}
+              setSubmitMode={setSubmitMode}
+              setFormData={setFormData}
+            />
+          </Router>
+        </DataContext.Provider>
+      </div>
+    </div>
   );
 }
 
