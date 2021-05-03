@@ -14,8 +14,8 @@ const Form= ({handleSubmit, handleChange, formData, submitMode}) => {
                 onSubmit={handleSubmit}
                 className="form-submit"
                 >
-            <h3>Create New Bookmark</h3>
-            <label>
+            <h3 className="create-header">Create New Bookmark</h3>
+            <label className="label-input">
                 Label:{" "}
             <input
                 type="text"
@@ -26,7 +26,7 @@ const Form= ({handleSubmit, handleChange, formData, submitMode}) => {
             ></input>{" "}
             </label>
             <br />
-            <label>
+            <label className="url-input">
                 Url:{" "}
             <input
                 type="text"
@@ -36,7 +36,7 @@ const Form= ({handleSubmit, handleChange, formData, submitMode}) => {
                 placeholder={"enter url..."}
             ></input>{" "}
             </label>
-            <label>
+            <label className="tags-input">
                 Tags:{" "}
             <input
                 type="text"
