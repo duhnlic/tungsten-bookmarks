@@ -11,14 +11,63 @@ export const DataContext = React.createContext();
 export function App() {
 
 
+    /* Authentication */
+    const [isLoggedIn, setLoggedIn] = useState(false);
+    const [loginForm, setLoginForm] = useState({
+      username: "",
+      password: ""
+    });
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch("http://localhost:8000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ ...loginForm })
+        });
+        const data = await response.json();
+        if (data.token) {
+          window.localStorage.setItem("token", data.token);
+          window.localStorage.setItem("username", data.username);
+          setLoggedIn(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const handleLogout = () => {
+      window.localStorage.clear();
+      setLoggedIn(false);
+    };
+  
+    const handleLoginChange = (e) => {
+      setLoginForm({ ...loginForm, [e.target.id]: e.target.value });
+    };
+  
+    /* END AUTHENTICATION */
+
+
 
   // Get/Read Bookmarks
   const [bookmarks, setBookmarks] = useState([])
   const getBookmarkData = async () => {
     try{
-      const result = await fetch("http://localhost:8000/bookmarks");
+      const result = await fetch(
+        `http://localhost:8000/user/${window.localStorage.getItem(
+          "username"
+        )}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        }
+      );
       const data = await result.json();
-      setBookmarks(data);
+      setBookmarks([...data.bookmarks]);
     } catch(err) {
       console.log(err);
     }
@@ -40,13 +89,30 @@ export function App() {
   e.preventDefault();
   const body = { ...formData };
   try {
-  const response = await fetch("http://localhost:8000/bookmarks", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
+  // const response = await fetch("http://localhost:8000/bookmarks", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   },
+  //   body: JSON.stringify(body)
+  // });
+  // const bookmark = await response.json();
+  const addBookmark = await fetch(
+    "http://localhost:8000/user/addBookmarkToUser",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${window.localStorage.getItem("token")}`
+
+      },
+      body: JSON.stringify({
+        ...body,
+        username: window.localStorage.getItem("username")
+      })
+    }
+  );
+  const data = await addBookmark.json();
   setFormData({
     label: "",
     url: "",
@@ -128,11 +194,26 @@ export function App() {
     deleteBookmark(e);
     };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLoggedIn(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (isLoggedIn) {
+      getBookmarkData();
+    }
+  }, [isLoggedIn]);
+
 
   return (
     <div>
+      {isLoggedIn ?(
+        <>
       <div className="app-header">
           <h1>TUNGSTEN BOOKMARKS</h1>
+          <button className="logout" onClick={handleLogout}>Log Out Here</button>
       </div>
       <div className="app-body">
         <DataContext.Provider value={bookmarks}>
@@ -154,6 +235,41 @@ export function App() {
           </Router>
         </DataContext.Provider>
       </div>
+        </>
+    ) : (
+      <>
+        <center>
+            <h1>Login To Tungsten</h1>
+          </center>
+          <form onSubmit={handleLogin}>
+            <label>
+              {" "}
+              Username:{" "}
+              <input
+                type="text"
+                id="username"
+                value={loginForm.username}
+                onChange={handleLoginChange}
+              />
+            </label>
+            <br />
+            <br />
+            <label>
+              {" "}
+              Password:{" "}
+              <input
+                type="password"
+                id="password"
+                value={loginForm.password}
+                onChange={handleLoginChange}
+              />
+            </label>
+            <br />
+            <input type="submit" />
+          </form>
+      </>
+
+    )}
     </div>
   );
 }
